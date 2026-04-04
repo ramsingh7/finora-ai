@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package finora.v1;
+
+option go_package = "finoraai/backend/api/proto/finora/v1;finorav1";
+
+message HealthRequest {}
+
+message HealthResponse {
+  string status = 1;
+  string version = 2;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string access_token = 1;
+  int64 expires_in_seconds = 2;
+}
+
+service FinoraService {
+  rpc Health(HealthRequest) returns (HealthResponse);
+  rpc Login(LoginRequest) returns (LoginResponse);
+}
