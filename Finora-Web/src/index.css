@@ -1,0 +1,89 @@
+@import 'tailwindcss';
+
+:root {
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+@theme {
+  --color-brand: #4f46e5;
+  --color-brand-dark: #3730a3;
+  --color-neon-cyan: #22d3ee;
+  --color-neon-green: #34d399;
+  --color-neon-purple: #8b5cf6;
+}
+
+body {
+  @apply m-0 min-h-screen bg-slate-950 text-slate-100 antialiased;
+  background-image:
+    radial-gradient(circle at 10% 10%, rgba(79, 70, 229, 0.2), transparent 25%),
+    radial-gradient(circle at 90% 80%, rgba(34, 211, 238, 0.2), transparent 30%),
+    linear-gradient(120deg, #020617 0%, #0b1120 45%, #111827 100%);
+}
+
+#root {
+  @apply min-h-screen;
+}
+
+.ai-grid-bg {
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+  background-size: 34px 34px;
+  animation: grid-scroll 14s linear infinite;
+}
+
+.glass-panel {
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(10px);
+}
+
+.market-glow {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(64px);
+  opacity: 0.4;
+  animation: pulse-drift 7s ease-in-out infinite;
+}
+
+.ticker-line {
+  position: relative;
+  overflow: hidden;
+}
+
+.ticker-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.3), transparent);
+  transform: translateX(-100%);
+  animation: ticker-scan 2.8s linear infinite;
+}
+
+@keyframes grid-scroll {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: 0 34px, 34px 0;
+  }
+}
+
+@keyframes pulse-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate3d(16px, -10px, 0) scale(1.15);
+    opacity: 0.55;
+  }
+}
+
+@keyframes ticker-scan {
+  to {
+    transform: translateX(100%);
+  }
+}
