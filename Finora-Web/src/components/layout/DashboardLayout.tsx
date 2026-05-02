@@ -1,21 +1,34 @@
 import { motion } from 'framer-motion'
+import {
+  Activity,
+  BrainCircuit,
+  Database,
+  FileText,
+  Home,
+  LineChart,
+  Radar,
+  Settings,
+  ShieldCheck,
+  Users,
+  Workflow,
+} from 'lucide-react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { logout } from '../../features/auth/authSlice'
 import { useAppDispatch } from '../../store/hooks'
 import { AnimatedBackdrop } from '../ui/AnimatedBackdrop'
 
 const navItems = [
-  { to: '/dashboard', label: 'Overview' },
-  { to: '/dashboard/system-health', label: 'System Health' },
-  { to: '/dashboard/profile', label: 'Profile' },
-  { to: '/dashboard/settings', label: 'Settings' },
-  { to: '/dashboard/users', label: 'Users' },
-  { to: '/dashboard/roles', label: 'Roles' },
-  { to: '/dashboard/market-data', label: 'Market Data' },
-  { to: '/dashboard/models', label: 'Models' },
-  { to: '/dashboard/predictions', label: 'Predictions' },
-  { to: '/dashboard/jobs', label: 'Jobs' },
-  { to: '/dashboard/logs', label: 'Logs' },
+  { to: '/dashboard', label: 'Overview', icon: Home },
+  { to: '/dashboard/system-health', label: 'System Health', icon: Activity },
+  { to: '/dashboard/profile', label: 'Profile', icon: ShieldCheck },
+  { to: '/dashboard/settings', label: 'Settings', icon: Settings },
+  { to: '/dashboard/users', label: 'Users', icon: Users },
+  { to: '/dashboard/roles', label: 'Roles', icon: Radar },
+  { to: '/dashboard/market-data', label: 'Market Data', icon: LineChart },
+  { to: '/dashboard/models', label: 'Models', icon: BrainCircuit },
+  { to: '/dashboard/predictions', label: 'Predictions', icon: Database },
+  { to: '/dashboard/jobs', label: 'Jobs', icon: Workflow },
+  { to: '/dashboard/logs', label: 'Logs', icon: FileText },
 ]
 
 export function DashboardLayout() {
@@ -34,24 +47,29 @@ export function DashboardLayout() {
         <div className='border-b border-slate-700/60 px-6 py-5'>
           <p className='text-xs uppercase tracking-widest text-slate-400'>Finora</p>
           <h1 className='mt-1 text-xl font-semibold'>AI Trading Admin</h1>
+          <p className='mt-1 text-xs text-slate-400'>Enterprise Operations</p>
         </div>
         <nav className='space-y-1 p-4'>
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === '/dashboard'}
-              className={({ isActive }) =>
-                `block rounded-md px-3 py-2 text-sm transition ${
-                  isActive
-                    ? 'bg-gradient-to-r from-indigo-500/80 to-cyan-500/80 text-white'
-                    : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
-                }`
-              }
-            >
-              {item.label}
-            </NavLink>
-          ))}
+          {navItems.map((item) => {
+            const Icon = item.icon
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.to === '/dashboard'}
+                className={({ isActive }) =>
+                  `group flex items-center gap-3 rounded-md px-3 py-2 text-sm transition ${
+                    isActive
+                      ? 'bg-gradient-to-r from-indigo-500/80 to-cyan-500/80 text-white shadow-lg shadow-cyan-500/10'
+                      : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
+                  }`
+                }
+              >
+                <Icon size={16} className='opacity-90 transition group-hover:scale-105' />
+                <span>{item.label}</span>
+              </NavLink>
+            )
+          })}
         </nav>
       </aside>
       <div className='relative z-10 flex min-h-screen flex-1 flex-col'>
@@ -60,13 +78,18 @@ export function DashboardLayout() {
             <p className='text-xs uppercase tracking-wider text-cyan-300'>Autonomous market operations</p>
             <p className='text-sm text-slate-300'>AI agents, prediction models, and system telemetry</p>
           </div>
-          <button
-            type='button'
-            onClick={handleLogout}
-            className='rounded-md border border-slate-500 bg-slate-900/60 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800'
-          >
-            Logout
-          </button>
+          <div className='flex items-center gap-3'>
+            <span className='rounded-full border border-emerald-400/40 bg-emerald-500/15 px-3 py-1 text-xs text-emerald-300'>
+              All systems active
+            </span>
+            <button
+              type='button'
+              onClick={handleLogout}
+              className='rounded-md border border-slate-500 bg-slate-900/60 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800'
+            >
+              Logout
+            </button>
+          </div>
         </header>
         <motion.main
           key='dashboard-content'
