@@ -31,6 +31,14 @@ services:
       - "6379:6379"
     restart: unless-stopped
 
+  backend-init:
+    image: busybox:1.36
+    user: "0:0"
+    volumes:
+      - finora-backend-data:/data
+    command: ["sh", "-c", "chown -R 65532:65532 /data"]
+    restart: "no"
+
   backend:
     build:
       context: .
@@ -40,15 +48,19 @@ services:
         COMMIT: "local"
         BUILDTIME: "docker"
     depends_on:
+      backend-init:
+        condition: service_completed_successfully
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
+    volumes:
+      - finora-backend-data:/data
     environment:
       ENV: production
       GRPC_HOST: "0.0.0.0"
       GRPC_PORT: "50051"
-      DATA_DIR: /tmp/finora-data
+      DATA_DIR: /data
       LOG_LEVEL: info
       DATABASE_URL: postgres://finora:finora@postgres:5432/finora?sslmode=disable
       REDIS_ADDR: redis:6379
@@ -93,3 +105,4 @@ services:
 volumes:
   finora-pg-data:
   finora-redis-data:
+  finora-backend-data:
