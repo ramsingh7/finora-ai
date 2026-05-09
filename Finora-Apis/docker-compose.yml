@@ -99,6 +99,8 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
       PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - finora-pgadmin-data:/var/lib/pgadmin
     ports:
       - "5050:80"
     depends_on:
@@ -116,3 +118,4 @@ volumes:
   finora-pg-data:
   finora-redis-data:
   finora-backend-data:
+  finora-pgadmin-data:
