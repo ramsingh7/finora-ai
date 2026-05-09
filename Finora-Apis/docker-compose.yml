@@ -32,6 +32,8 @@ services:
     ports:
       - "6379:6379"
     restart: unless-stopped
+    networks:
+      - finora-network
 
   backend-init:
     image: busybox:1.36
@@ -92,6 +94,8 @@ services:
         soft: 100000
         hard: 100000
     restart: unless-stopped
+    networks:
+      - finora-network
 
   pgadmin:
     image: dpage/pgadmin4:latest
