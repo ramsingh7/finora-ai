@@ -16,6 +16,8 @@ services:
     ports:
       - "5432:5432"
     restart: unless-stopped
+    networks:
+      - finora-network  
 
   redis:
     image: redis:7-alpine
@@ -62,18 +64,20 @@ services:
       GRPC_PORT: "50051"
       DATA_DIR: /data
       LOG_LEVEL: info
-      DATABASE_URL: postgres://finora:finora@postgres:5432/finora?sslmode=disable
+      DATABASE_URL: ${DATABASE_URL}
       REDIS_ADDR: redis:6379
       REDIS_DB: "0"
       JWT_ISSUER: finora-backend
       JWT_EXPIRE_MINUTES: "60"
       # HS256 secret — replace in real deployments (min 32 chars; this is 64 hex).
-      JWT_SECRET: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+      JWT_SECRET: ${JWT_SECRET}
     expose:
       - "50051"
     ports:
       - "50051:50051"
     restart: unless-stopped
+    networks:
+      - finora-network
 
   nginx:
     image: nginx:1.27-alpine
@@ -101,6 +105,12 @@ services:
       postgres:
         condition: service_healthy
     restart: unless-stopped
+    networks:
+      - finora-network
+
+networks:
+  finora-network:
+    driver: bridge
 
 volumes:
   finora-pg-data:

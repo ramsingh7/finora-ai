@@ -2,6 +2,10 @@
 
 Finora AI is an AI-powered stock market analytics and prediction platform designed to help users analyze market behavior and generate intelligent forecasting insights. It combines time-series forecasting, technical analysis, sentiment analysis, and interactive dashboards to predict next-day stock prices, market trends, volatility, and buy/sell/hold signals.
 
+## Backend Implementation Docs
+
+- gRPC routing and method policy: `docs/BACKEND_GRPC_ROUTING.md`
+
 ## Overview
 
 The goal of Finora AI is to build a portfolio-worthy and production-oriented financial intelligence platform that can evolve into a real-world SaaS product. The system uses historical stock data, technical indicators, financial news sentiment, and optional social media sentiment to provide smarter decision support for traders, learners, and analysts.

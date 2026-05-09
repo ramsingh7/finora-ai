@@ -12,21 +12,13 @@ import (
 
 	"finoraai/backend/internal/auth"
 	"finoraai/backend/internal/constant"
+	"finoraai/backend/internal/transport/grpc/routing"
 )
-
-var jwtPublicMethods = map[string]struct{}{
-	"/grpc.health.v1.Health/Check":                                   {},
-	"/grpc.health.v1.Health/Watch":                                   {},
-	"/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo": {},
-	"/grpc.reflection.v1.ServerReflection/ServerReflectionInfo":      {},
-	"/finora.v1.FinoraService/Health":                                {},
-	"/finora.v1.FinoraService/Login":                                 {},
-}
 
 // JWTAuth enforces Bearer JWT on all RPCs except health, reflection, and Login.
 func JWTAuth(log *zap.Logger, parser *auth.JWT) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
-		if _, public := jwtPublicMethods[info.FullMethod]; public {
+		if routing.IsPublicMethod(info.FullMethod) {
 			return handler(ctx, req)
 		}
 

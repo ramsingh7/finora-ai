@@ -12,6 +12,7 @@ import (
 	finorav1 "finoraai/backend/api/proto/finora/v1"
 	"finoraai/backend/internal/config"
 	"finoraai/backend/internal/transport/grpc/interceptor"
+	"finoraai/backend/internal/transport/grpc/routing"
 )
 
 // Deps are gRPC service implementations registered on the server.
@@ -50,9 +51,8 @@ func NewServer(cfg config.Config, log *zap.Logger, deps Deps) (*grpc.Server, err
 	finorav1.RegisterFinoraServiceServer(s, deps.Finora)
 	grpc_health_v1.RegisterHealthServer(s, deps.Health)
 
-	const finoraServiceName = "finora.v1.FinoraService"
 	deps.Health.SetServingStatus("", grpc_health_v1.HealthCheckResponse_SERVING)
-	deps.Health.SetServingStatus(finoraServiceName, grpc_health_v1.HealthCheckResponse_SERVING)
+	deps.Health.SetServingStatus(routing.FinoraServiceName, grpc_health_v1.HealthCheckResponse_SERVING)
 
 	if cfg.EnableReflection {
 		reflection.Register(s)
