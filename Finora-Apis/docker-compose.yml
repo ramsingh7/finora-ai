@@ -64,6 +64,7 @@ services:
       ENV: production
       GRPC_HOST: "0.0.0.0"
       GRPC_PORT: "50051"
+      HTTP_PORT: "3000"
       DATA_DIR: /data
       LOG_LEVEL: info
       DATABASE_URL: ${DATABASE_URL}
@@ -75,8 +76,10 @@ services:
       JWT_SECRET: ${JWT_SECRET}
     expose:
       - "50051"
+      - "3000"
     ports:
       - "50051:50051"
+      - "3000:3000"
     restart: unless-stopped
     networks:
       - finora-network

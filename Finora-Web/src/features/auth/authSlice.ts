@@ -7,6 +7,7 @@ export type AuthState = {
   loading: boolean
   error: string | null
   sessionExpiresAt: number | null
+  token: string | null
 }
 
 const initialState: AuthState = {
@@ -14,6 +15,7 @@ const initialState: AuthState = {
   loading: false,
   error: null,
   sessionExpiresAt: null,
+  token: null,
 }
 
 export const login = createAsyncThunk(
@@ -35,6 +37,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.isAuthenticated = false
       state.sessionExpiresAt = null
+      state.token = null
       state.error = null
     },
   },
@@ -46,8 +49,9 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false
-        state.isAuthenticated = action.payload.ok
-        state.sessionExpiresAt = Date.now() + action.payload.expiresInSeconds * 1000
+        state.isAuthenticated = true
+        state.token = action.payload.access_token
+        state.sessionExpiresAt = Date.now() + action.payload.expires_in_seconds * 1000
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false

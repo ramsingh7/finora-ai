@@ -20,7 +20,7 @@ func NewPostgresStore(pool *pgxpool.Pool) *PostgresStore {
 
 // GetByEmail returns a user by unique email.
 func (s *PostgresStore) GetByEmail(ctx context.Context, email string) (User, error) {
-	const q = `SELECT id::text, email, password_hash FROM users WHERE lower(email) = lower($1)`
+	const q = `SELECT id::text, email, password_hash FROM mst_users WHERE lower(email) = lower($1)`
 	var u User
 	err := s.pool.QueryRow(ctx, q, email).Scan(&u.ID, &u.Email, &u.PasswordHash)
 	if err != nil {

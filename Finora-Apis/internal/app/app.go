@@ -17,6 +17,7 @@ import (
 	redisstore "finoraai/backend/internal/storage/redis"
 	grpctransport "finoraai/backend/internal/transport/grpc"
 	"finoraai/backend/internal/transport/grpc/interceptor"
+	httptransport "finoraai/backend/internal/transport/http"
 	"finoraai/backend/internal/user"
 	"finoraai/backend/internal/version"
 
@@ -112,6 +113,14 @@ func Run(ctx context.Context, cfg config.Config, log *zap.Logger) error {
 		zap.String("data_dir", fm.Root()),
 	)
 
+	httpSrv := httptransport.NewServer(cfg, log, finoraSvc)
+	go func() {
+		log.Info("HTTP listening", zap.String("addr", httpSrv.Addr))
+		if err := httpSrv.ListenAndServe(); err != nil && err.Error() != "http: Server closed" {
+			log.Error("http Serve returned", zap.Error(err))
+		}
+	}()
+
 	<-ctx.Done()
 
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), cfg.ShutdownGrace())
@@ -120,6 +129,7 @@ func Run(ctx context.Context, cfg config.Config, log *zap.Logger) error {
 	done := make(chan struct{})
 	go func() {
 		srv.GracefulStop()
+		_ = httpSrv.Shutdown(shutdownCtx)
 		close(done)
 	}()
 

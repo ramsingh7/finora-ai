@@ -13,6 +13,7 @@ type Config struct {
 	Env              string `env:"ENV" envDefault:"development"`
 	GRPCHost         string `env:"GRPC_HOST" envDefault:"0.0.0.0"`
 	GRPCPort         string `env:"GRPC_PORT" envDefault:"50051"`
+	HTTPPort         string `env:"HTTP_PORT" envDefault:"3000"`
 	LogLevel         string `env:"LOG_LEVEL" envDefault:"info"`
 	DataDir          string `env:"DATA_DIR" envDefault:"./data"`
 	MaxUploadMB      int    `env:"MAX_UPLOAD_MB" envDefault:"32"`
